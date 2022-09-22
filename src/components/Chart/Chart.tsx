@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import styles from "./Chart.module.css";
 import {
   Chart as ChartJS,
@@ -13,7 +13,6 @@ import { Bar } from "react-chartjs-2";
 import { ChartOptions } from "chart.js";
 import usechartStore, { PositionType } from "../../store/useChartStore";
 import useChartStore from "../../store/useChartStore";
-import { PluginImport } from "typescript";
 ChartJS.register(
   CategoryScale,
   LinearScale,
