@@ -1,0 +1,10 @@
+.radioGroup {
+  display: flex;
+  flex-wrap: wrap;
+}
+.radioButtonContainer {
+  margin: 1.5rem 0;
+}
+.label {
+  padding-left: 0.5rem;
+}

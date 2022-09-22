@@ -1,0 +1,34 @@
+.inputBox {
+  width: 100%;
+  /* border: 1px solid red; */
+  display: flex;
+  flex-direction: row;
+  margin: 0.8rem 0;
+}
+
+.label {
+  font-size: 1.3rem;
+  padding: 0.4rem 0;
+  margin: 0 0.2rem;
+}
+.input {
+  border: 0;
+  outline: 0;
+  /* max-height: 15rem; */
+  /* max-width: 95%; */
+  flex: 1;
+  /* min-width: 95%; */
+  font-size: 1.2rem;
+  padding: 2px;
+  background-color: #383838;
+  margin: 0 0.2rem;
+  color: white;
+  border-bottom: 2px solid grey;
+  /* 181a1b */
+}
+.input:focus {
+  border-color: rgb(255, 255, 255);
+}
+.input:hover{
+  background-color: #404040;
+}

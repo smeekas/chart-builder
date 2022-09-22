@@ -1,0 +1,19 @@
+.cell {
+  /* width: 100%; */
+  min-width: 50px;
+  max-width: 100%;
+  outline: none;
+  word-wrap: break-word;
+  /* border:  1px solid red; */
+  border: 2px solid black;
+  /* border-top: none; */
+  border-bottom: none;
+  background-color: gray;
+  /* border: none; */
+}
+.inputInsideCell {
+  width: inherit;
+  margin: 0;
+  outline: none;
+  border: none;
+}

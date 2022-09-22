@@ -1,0 +1,10 @@
+.chartContainer {
+  /* flex: 1; */
+  /* border: 1px solid yellow; */
+  position: relative;
+  margin: auto;
+  /* width: 80%; */
+  flex: 1;
+  height: 99vh;
+  margin-left: 0.5rem;
+}

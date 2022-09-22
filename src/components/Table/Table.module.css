@@ -1,0 +1,51 @@
+table,
+th,
+td {
+  /* border: 1px solid black; */
+  width: 100%;
+}
+.gridContainer {
+  display: grid;
+  /* border: 1px solid yellow; */
+  grid-template-columns: 20px 1fr 1fr;
+}
+.tableContainer {
+  max-height: 20rem;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  /* border: 1px solid turquoise; */
+}
+.icons{
+  /* color: white !important; */
+  padding: 0;
+  vertical-align: middle;
+  font-size: 1.2rem;
+  margin: 0 0.2rem;
+  border: none !important; 
+}
+.icons:hover{
+ transform: scale(1.2);
+ background-color: inherit !important;
+}
+.tableControl{
+    display: flex;
+    margin: 0.5rem 0;
+    justify-content: space-between;
+}
+.deleteInput::-webkit-outer-spin-button,
+.deleteInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.deleteInput[type=number] {
+  -moz-appearance: textfield;
+}
+.deleteInput{
+    width: 30px;
+    color: white;
+    outline: none;
+    border: none;
+    font-size: 1.1rem;
+}

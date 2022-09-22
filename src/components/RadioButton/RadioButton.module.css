@@ -1,0 +1,19 @@
+.radioButton{
+    /* border: 1px solid red; */
+    padding:4px;
+    margin: 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    background-color:#1e8fff;
+}
+.radioButton:hover{
+    background-color: #eee;
+    color: #1e8fff;
+}
+.selected{
+    background-color: #eee;
+    color: #1e8fff;
+
+}
+
+/* 00d6d6 */

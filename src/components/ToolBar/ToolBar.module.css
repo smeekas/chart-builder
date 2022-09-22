@@ -1,0 +1,10 @@
+.toolBar {
+    /* flex: 2; */
+    width: 30%;
+    max-width: 17rem;
+    min-width: 15rem;
+    align-self: center;
+    height: 99vh;
+    /* justify-self: stretch; */
+  /* border: 1px solid greenyellow; */
+}
