@@ -15,6 +15,30 @@ td {
   overflow-x: hidden;
   /* border: 1px solid turquoise; */
 }
+@media screen and (max-width:700px) {
+    .tableContainer{
+      max-height: 10rem;
+      width: 15rem;
+    }
+    .gridContainer{
+      grid-template-columns: 30px 1fr 1fr;
+    }
+    .icons{
+      /* color: white !important; */
+      padding: 0;
+      vertical-align: middle;
+      font-size: 1.1rem;
+      margin: 0 0.1rem;
+      border: none !important; 
+    }
+    .icons:hover{
+     transform: scale(1.1);
+     background-color: inherit !important;
+    }
+    /* .deleteInput{
+      font-size: 1rem;
+    } */
+}
 .icons{
   /* color: white !important; */
   padding: 0;

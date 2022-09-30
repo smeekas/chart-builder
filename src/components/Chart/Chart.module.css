@@ -8,3 +8,11 @@
   height: 99vh;
   margin-left: 0.5rem;
 }
+@media screen and (max-width:700px) {
+    .chartContainer{
+      width: 100vw;
+      margin: none;
+      /* align-self: stretch; */
+      height:auto ;
+    }
+}

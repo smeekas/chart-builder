@@ -87,11 +87,11 @@ function NewChartControl() {
     }
   };
   return (
-    <div>
+    <div className={styles.container}>
       <div>
         <Table />
       </div>
-      <div>
+      <div className={styles.box}>
         <InputBox
           value={title}
           labelName="Title"
