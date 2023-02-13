@@ -1,5 +1,5 @@
 import { ChildProcess } from "child_process";
-import React, { ChangeEventHandler, FocusEventHandler } from "react";
+import React, { ChangeEventHandler, FocusEventHandler, useState } from "react";
 import DebouncThisEvent from "../../utils/debounce";
 import styles from "./ColorPicker.module.css";
 type ColorpickerTypes = {
@@ -12,6 +12,7 @@ function ColorPicker({
   onChange: changeHandler,
   selectedColor,
 }: ColorpickerTypes) {
+
   return (
     <div className={styles.colorPicker}>
       <label>{labelName}</label>

@@ -1,8 +1,5 @@
 import React, {
   ChangeEventHandler,
-  FocusEventHandler,
-  useCallback,
-  useState,
 } from "react";
 import styles from "./NewChartControl.module.css";
 import InputBox from "../InputBox/InputBox";
@@ -13,112 +10,71 @@ import RadioButtonGroup from "../RadioButtonGroup/RadioButtonGroup";
 import type { RadioButtonData } from "../RadioButtonGroup/RadioButtonGroup";
 import DebounceThisEvent from "../../utils/debounce";
 import Button from "../Button/Button";
+import { Switch } from "antd";
 
 function NewChartControl() {
-  const [data, setData] = useState([
-    [{ value: "Vanilla" }, { value: "Chocolate" }],
-    [{ value: "Strawberry" }, { value: "Cookies" }],
-  ]);
-  const titlePos: RadioButtonData = {
-    dataArr: ["Top", "Bottom", "Left", "Right"],
-    groupName: "Title Pos",
-  };
+
   const legendPos: RadioButtonData = {
     dataArr: ["Top", "Bottom", "Left", "Right"],
     groupName: "Legend Pos",
   };
-  const changeTitle = useChartStore((state) => state.changeTitle);
-  const changeLegend = useChartStore((state) => state.changeLegend);
-  const title = useChartStore((state) => state.title);
-  const legendName = useChartStore((state) => state.legendName);
-  const changeTitleColor = useChartStore((state) => state.changeTitleColor);
-  const debouncedChangeTitleColor = DebounceThisEvent(changeTitleColor);
 
-  const changeLegendColor = useChartStore((state) => state.changeLegendColor);
-  const debouncedChangeLegendColor = DebounceThisEvent(changeLegendColor);
+  const grid = useChartStore(state => state.grid)
+  const line = useChartStore(state => state.line)
+  const changeLine = useChartStore(state => state.setLine)
+
+  const bar = useChartStore(state => state.bar)
+  const changeBar = useChartStore(state => state.setBar)
+
+  const lineColor = useChartStore(state => state.lineColor)
+  const changeLineColor = useChartStore(state => state.setLineColor)
+  const debouncedChangeLineColor = DebounceThisEvent(changeLineColor)
+  const changeGrid = useChartStore(state => state.changeGrid)
+  const changeTitle = useChartStore((state) => state.changeTitle);
+  const backgroundColor = useChartStore(state => state.backgroundColor)
+  const title = useChartStore((state) => state.title);
+
+  const gridColor = useChartStore(state => state.gridColor)
+  const changeGridColor = useChartStore(state => state.changeGridColor)
+  const debouncedChangeGridColor = DebounceThisEvent(changeGridColor)
+
 
   const changeChartColor = useChartStore((state) => state.changeChartColor);
   const debouncedChangeChartColor = DebounceThisEvent(changeChartColor);
-
-  // const changeBackgroundColor = useChartStore((state) => state.changeBackgroundColor);
-  // const debouncedChangeBackgroundColor = DebounceThisEvent(changeBackgroundColor);
-
-  const titleColor = useChartStore((state) => state.titleColor);
-  const legendColor = useChartStore((state) => state.legendColor);
+  const changeBackgroundColor = useChartStore(state => state.changeBackgroundColor)
+  const debouncedBackgroundColor = DebounceThisEvent(changeBackgroundColor)
   const chartColor = useChartStore((state) => state.chartColor);
-  // const backgroundColor = useChartStore((state) => state.backgroundColor);
-  const chartRef = useChartStore((state) => state.chartRef);
-  const selectedTitlePos = useChartStore((state) => state.titlePos);
-  const changeTitlePos = useChartStore((state) => state.changeTitlePos);
   const selectedLegendPos = useChartStore((state) => state.legendPos);
   const changeLegendPos = useChartStore((state) => state.changeLegendPos);
-  const titleChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
+
+  const legendChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
     changeTitle(e.target.value);
   };
-  const legendChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
-    changeLegend(e.target.value);
-  };
-  const titleColorChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
-    // console.log(e.target.value);
-    debouncedChangeTitleColor(e.target.value);
-  };
-  // console.log("HERE");
-  const legendColorChangeHandler: ChangeEventHandler<HTMLInputElement> = (
-    e
-  ) => {
-    debouncedChangeLegendColor(e.target.value);
-  };
 
+
+  const setDownload = useChartStore(state => state.setDownload)
   const chartColorChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
     debouncedChangeChartColor(e.target.value);
   };
-  // const backgroundColorChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
-  //   debouncedChangeBackgroundColor(e.target.value);
-  // };
-  const titlePosition = () => {
-    console.log("clicked!");
+  const backgroundColorChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
+    debouncedBackgroundColor(e.target.value);
   };
-  const downloadHandler = () => {
-    const anchor = document.createElement("a");
-    if (chartRef?.current) {
-      anchor.href = chartRef?.current?.toBase64Image();
-      anchor.download = "chart.png";
-      anchor.click();
-    }
-  };
+  const gridColorChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
+    debouncedChangeGridColor(e.target.value)
+  }
+  const lineColorChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
+    debouncedChangeLineColor(e.target.value)
+  }
   return (
     <div className={styles.container}>
       <div>
         <Table />
       </div>
-      <div className={styles.box}>
-        <InputBox
-          value={title}
-          labelName="Title"
-          onChange={titleChangeHandler}
-        />
-        <ColorPicker
-          labelName="Title Color "
-          selectedColor={titleColor}
-          onChange={titleColorChangeHandler}
-        />
-        <RadioButtonGroup
-          selectedPos={selectedTitlePos}
-          onChange={changeTitlePos}
-          radioGroupName="Title Position"
-          radioButtonData={titlePos}
-        />
-      </div>
       <div>
         <InputBox
-          value={legendName}
+          value={title}
           labelName="Legend"
           onChange={legendChangeHandler}
-        />
-        <ColorPicker
-          labelName="Legend Color "
-          selectedColor={legendColor}
-          onChange={legendColorChangeHandler}
         />
         <RadioButtonGroup
           selectedPos={selectedLegendPos}
@@ -133,17 +89,35 @@ function NewChartControl() {
           onChange={chartColorChangeHandler}
           selectedColor={chartColor}
         />
-        {/* <ColorPicker
+        <ColorPicker
+          labelName="Line Color "
+          onChange={lineColorChangeHandler}
+          selectedColor={lineColor}
+        />
+        <ColorPicker
           labelName="Background Color "
           onChange={backgroundColorChangeHandler}
           selectedColor={backgroundColor}
-        /> */}
+        />
+        <div className={styles.switch}>
+          grid
+          <Switch onChange={() => changeGrid()} checked={grid} />
+        </div>
+        <div className={styles.switch}>
+        line
+        <Switch onChange={() => changeLine()} checked={line} />
+
+        </div>
+        <ColorPicker
+          labelName="Grid Color"
+          onChange={gridColorChangeHandler}
+          selectedColor={gridColor}
+        />
       </div>
       <div className={styles.downloadButton}>
-        <Button colorHex="#1ea1dd" onClick={downloadHandler}>
+        <Button colorHex="#1ea1dd" onClick={() => setDownload(true)}>
           Download Chart
         </Button>
-        {/* <button onClick={downloadHandler}>download</button> */}
       </div>
     </div>
   );

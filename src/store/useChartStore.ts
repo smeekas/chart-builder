@@ -1,6 +1,7 @@
 import create from "zustand";
 import { Chart as ChartJS } from "chart.js";
 import React from "react";
+import { setgid } from "process";
 type DataType = {
   x: string;
   y: number;
@@ -9,29 +10,32 @@ export type PositionType = "Top" | "Bottom" | "Right" | "Left";
 interface ChartStoreTypes {
   data: DataType[];
   title: string;
-  titleColor: string;
-  legendName: string;
   legendColor: string;
-  titlePos: PositionType;
   legendPos: PositionType;
   chartColor: string;
   backgroundColor: string;
-  chartRef: React.RefObject<ChartJS<"bar">> | null;
-
-  // chartColor:string
-  changeTitle: (newTitle: string) => void;
-  changeTitleColor: (newTitleColor: string) => void;
-  changeLegend: (newLegend: string) => void;
-  changeLegendColor: (newLegendColor: string) => void;
+  download: boolean
+  grid: boolean
+  changeTitle: (newLegend: string) => void;
+  // changeLegendColor: (newLegendColor: string) => void;
   addRow: () => void;
   changeDataX: (index: number, updatedVal: string) => void;
   changeDataY: (index: number, updatedVal: number) => void;
-  changeTitlePos: (newTitlePos: PositionType) => void;
+  // changeTitlePos: (newTitlePos: PositionType) => void;
+  changeGrid: () => void
+  gridColor: string
+  bar:boolean
+  line:boolean
+  setBar: (newBar: boolean) => void
+  setLine: () => void
+  lineColor:string
+  setLineColor:(newLineColor:string)=>void
+  changeGridColor: (newGridColor: string) => void
   changeLegendPos: (newLegendPos: PositionType) => void;
   changeChartColor: (newChartColor: string) => void;
   changeBackgroundColor: (newBackgroundColor: string) => void;
   deleteRowHandler: (rowNumber: number) => void;
-  addRef: (ref: React.RefObject<ChartJS<"bar">>) => void;
+  setDownload: (newDownload: boolean) => void
 }
 
 const useChartStore = create<ChartStoreTypes>()((set) => ({
@@ -41,48 +45,56 @@ const useChartStore = create<ChartStoreTypes>()((set) => ({
       y: NaN,
     },
   ],
-  chartRef: null,
-  addRef: (chartRef) =>
+  title: "Dataset",
+  changeTitle: (newLegend) =>
     set((state) => {
       return {
-        chartRef: chartRef,
+        title: newLegend,
       };
     }),
-  title: "Bar Chart",
-  changeTitle: (newTitle) =>
-    set((state) => {
-      return {
-        title: newTitle,
-      };
-    }),
-  titleColor: "#656565",
-  changeTitleColor: (newTitleColor: string) =>
-    set((state) => {
-      return {
-        titleColor: newTitleColor,
-      };
-    }),
-  legendName: "Dataset",
-  changeLegend: (newLegend) =>
-    set((state) => {
-      return {
-        legendName: newLegend,
-      };
-    }),
+  download: false,
+  grid: true,
+  changeGrid: () => set(state => {
+    return {
+      grid: !state.grid
+    }
+  }),
+  bar:true,
+  setBar:(newBar)=>set(state=>{
+    return {
+      bar:newBar
+    }
+  }),
+  line:false,
+  setLine:()=>set(state=>{
+    return {
+      line:!state.line
+    }
+  }),
+  setDownload: (newDownload: boolean) => set((state) => {
+    return {
+      download: newDownload
+    }
+  }),
+  lineColor:"white",
+  setLineColor:(newLineColor)=>set(state=>{
+    return {
+      lineColor:newLineColor
+    }
+  }),
   legendColor: "#656565",
-  changeLegendColor: (newLegendColor) =>
+  changeLegendColor: (newLegendColor: string) =>
     set((state) => {
       return {
         legendColor: newLegendColor,
       };
     }),
-  titlePos: "Top",
-  changeTitlePos: (newTitlePos) =>
-    set((state) => {
-      return {
-        titlePos: newTitlePos,
-      };
-    }),
+  gridColor: "#fff",
+  changeGridColor: (newGridColor) => set((state) => {
+    return {
+      gridColor: newGridColor
+    }
+  }),
   legendPos: "Top",
   changeLegendPos: (newLegendPos) =>
     set((state) => {
@@ -105,14 +117,14 @@ const useChartStore = create<ChartStoreTypes>()((set) => ({
   changeDataX: (index, updatedVal) =>
     set((state) => {
       const newData = [...state.data];
-      console.log("x store");
+      // console.log("x store");
       newData[index].x = updatedVal;
       return { data: newData };
     }),
   changeDataY: (index, updatedVal) =>
     set((state) => {
       const newData = [...state.data];
-      console.log("y store");
+      // console.log("y store");
 
       newData[index].y = updatedVal;
       return { data: newData };

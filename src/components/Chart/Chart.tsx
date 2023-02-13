@@ -1,142 +1,70 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect } from "react";
 import styles from "./Chart.module.css";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import { Bar } from "react-chartjs-2";
-import { ChartOptions } from "chart.js";
+import { useCurrentPng, UseCurrentPng } from "recharts-to-png";
 import usechartStore, { PositionType } from "../../store/useChartStore";
 import useChartStore from "../../store/useChartStore";
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
-
-// function isPosition(position: string): position is PositionType {
-//   return (position as PositionType) !== undefined;
-// }
-// function getPos(pos: PositionType): pos is "top" | "bottom" {
-//   return (pos as "top" | "bottom") !== undefined;
-// }
-export function Chart() {
+import { BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar, ResponsiveContainer, LineChart, ComposedChart, Line, Area } from "recharts";
+import { HorizontalAlignmentType, VerticalAlignmentType } from "recharts/types/component/DefaultLegendContent";
+import { saveAs } from 'file-saver';
+const Chart = () => {
   const storeData = usechartStore((state) => state.data);
+  const [getPng, { ref, isLoading }] = useCurrentPng()
   const title = usechartStore((state) => state.title);
-  const legendName = usechartStore((state) => state.legendName);
-  const titleColor = useChartStore((state) => state.titleColor);
-  const legendColor = useChartStore((state) => state.legendColor);
-  const addRef = useChartStore((state) => state.addRef);
-  const titlePosition = usechartStore(
-    (state) => state.titlePos
-  ).toLowerCase() as "top" | "bottom" | "left" | "right";
+  const download = usechartStore(state => state.download)
+  const setDownload = usechartStore(state => state.setDownload)
+  const grid = useChartStore(state => state.grid)
+  const gridColor = useChartStore(state => state.gridColor)
+  const line = useChartStore(state => state.line)
+  const lineColor = useChartStore(state => state.lineColor)
+
+  const data = storeData.map((item) => {
+    return {
+      name: item.x,
+      [`${title}`]: item.y
+    }
+  })
+  useEffect(() => {
+    async function getPhoto() {
+      const png = await getPng();
+      if (png) {
+        saveAs(png, 'myChart.png')
+        setDownload(false)
+      }
+
+    }
+    if (download) {
+      getPhoto();
+
+    }
+  }, [download])
   const legendPosition = usechartStore(
     (state) => state.legendPos
   ).toLowerCase() as "top" | "bottom" | "left" | "right";
-  const chartColor = useChartStore((state) => state.chartColor);
-  const xData = storeData.map((item) => item.x);
-  const yData = storeData.map((item) => item.y);
-  // console.log(titlePosition);
-  const chartRef = useRef<ChartJS<"bar">>(null);
-  useEffect(() => {
-    // console.log("HEREW")
-    addRef(chartRef);
-  }, [addRef]);
-  function isPosition(position: string): position is PositionType {
-    // return true if string is of type PositionType
-    return (position as PositionType) !== undefined;
+  const legendPos: {
+    vertical: VerticalAlignmentType
+    align: HorizontalAlignmentType
+  } = {
+    vertical: legendPosition === "left" || legendPosition === "right" ? "middle" : (legendPosition === "bottom" ? "bottom" : "top"),
+    align: legendPosition === "top" || legendPosition === "bottom" ? "center" : (legendPosition === "left" ? "left" : "right")
   }
-  const options: ChartOptions<"bar"> = useMemo(() => {
-    console.log("MEMO");
-    return {
-      responsive: true,
-      resizeDelay: 1000,
-      animation: {
-        duration: 0,
-      },
-
-      scales: {
-        y: {
-          ticks: {
-            color: "white",
-          },
-        },
-        x: {
-          ticks: {
-            color: "white",
-          },
-        },
-      },
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          //TODO ERROR IS HERE
-          position: legendPosition,
-          labels: {
-            color: legendColor,
-          },
-        },
-        title: {
-          position: titlePosition,
-          display: true,
-          text: title,
-          color: titleColor,
-        },
-      },
-    };
-  }, [title, titlePosition, titleColor, legendColor, legendPosition]);
-
-  // useEffect(()=>{
-  //   // chartRef.current?.scales.
-  // },[legendColor])
-  const data = useMemo(() => {
-    return {
-      labels: xData,
-      datasets: [
-        {
-          label: legendName,
-          data: yData,
-          backgroundColor: chartColor,
-          hoverBackgroundColor: "yellow",
-          // borderWidth: 8,
-          // borderColor: borderColor,
-          // hoverBorderColor: "red",
-        },
-      ],
-    };
-  }, [xData, yData, legendName, chartColor]);
-  const plugin = useMemo(() => {
-    return {
-      id: "custom_canvas_background_color",
-      beforeDraw: (chart: ChartJS) => {
-        const { ctx } = chart;
-        ctx.save();
-        ctx.globalCompositeOperation = "destination-over";
-        ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, chart.width, chart.height);
-        ctx.restore();
-      },
-    };
-  }, []);
-
+  const chartColor = useChartStore((state) => state.chartColor);
+  const backgroundColor = useChartStore(state => state.backgroundColor)
   return (
     <div className={styles.chartContainer}>
-      <Bar
-        redraw={!!storeData || !!titlePosition}
-        ref={chartRef}
-        style={{ width: "450px" }}
-        options={options}
-        data={data}
-        plugins={[plugin]}
-      />
+      <ResponsiveContainer width={"90%"} >
+
+        <ComposedChart data={data} ref={ref} >
+          <CartesianGrid horizontal={grid} stroke={gridColor} vertical={grid} fill={`${backgroundColor}`} />
+          <XAxis dataKey={"name"} />
+          <YAxis color="green" width={45} />
+          <Tooltip />
+          <Legend wrapperStyle={(legendPosition === "left" || legendPosition === "right") ? { width: "fit-content" } : {}} color="red" fill="red " align={legendPos.align} layout="horizontal" verticalAlign={legendPos.vertical} />
+          <Bar dataKey={`${title}`} fill={`${chartColor}`} />
+          {/* <Area type="monotone" dataKey={`${title}`} fill="#8884d8" stroke="#8884d8" /> */}
+          {line && <Line type="monotone" dataKey={`${title}`} stroke={lineColor} />
+          }        </ComposedChart>
+      </ResponsiveContainer>
     </div>
   );
 }
+export default React.memo(Chart)

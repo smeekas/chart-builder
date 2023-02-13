@@ -47,7 +47,6 @@ function Table() {
         <Button colorHex="#1ea1dd" onClick={() => addRow()}>
           Add Row
         </Button>
-        {/* <button onClick={() => addRow()}>Add Row</button> */}
         {!isDeleting && (
           <Button colorHex="#ff0000" onClick={deleteButtonClickHandler}>
             Delete Row

@@ -14,14 +14,12 @@
 .input {
   border: 0;
   outline: 0;
-  /* max-height: 15rem; */
-  /* max-width: 95%; */
   flex: 1;
-  /* min-width: 95%; */
-  font-size: 1.2rem;
-  padding: 2px;
+  /* font-size: 1.0rem; */
+  /* padding: 2px; */
   background-color: #383838;
-  margin: 0 0.2rem;
+  /* margin: 0 0.2rem; */
+  /* margin-right: 1rem; */
   color: white;
   border-bottom: 2px solid grey;
   /* 181a1b */
